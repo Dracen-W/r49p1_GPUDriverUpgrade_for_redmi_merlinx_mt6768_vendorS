@@ -21,6 +21,8 @@ vendor image.
 >
 > **You must flash the matching kernel first** — see [Requirements](#requirements). Installing the
 > module without it is expected to break boot.
+> 
+> **Some times** the kernel **may have booting problem** (e.g. stuck at system loading page), **just reboot** and everything will be fine.
 
 ## What was actually tested
 
