@@ -1,0 +1,8 @@
+Third-party work, not licensed by this project.
+
+This file is the work of its respective rights holder(s) (for example Arm, MediaTek, Xiaomi, Google, the Free
+Software Foundation / the Magisk project) and is NOT covered by the licence of this repository. The vendor files
+under donor/files/ are included solely so that the Magisk module can be built; the maintainer of this repository
+grants no licence to them and makes no claim to them. Their origin is documented in THIRD_PARTY_NOTICES.md and
+docs/DONOR.md; your rights to use or redistribute them are governed by the terms their owners apply.
+Where the file is itself a licence text (third_party/Magisk-LICENSE.txt), it may be copied verbatim as that text permits.

@@ -1,0 +1,6 @@
+dist/
+build/
+*.zip
+*.img
+__pycache__/
+*.DS_Store

@@ -1,0 +1,6 @@
+id=mali_r49p1_mt6768_slim
+name=Mali-G52 r49p1 userspace driver (MT6768)
+version=v@VERSION@
+versionCode=@VERSIONCODE@
+author=Dracen-W
+description=EXPERIMENTAL. Mali r49p1 userspace for MT6768. Needs the r49p1 kernel (github.com/Dracen-W/android_kernel_xiaomi_mt6768_S) - flash it FIRST. 64-bit only.

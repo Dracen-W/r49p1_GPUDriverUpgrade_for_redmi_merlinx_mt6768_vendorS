@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Dracen-W
+version = 1
+
+[[annotations]]
+path = ["donor/SHA256SUMS", "third_party/module_installer.sha256", ".gitignore", "NOTICE", "module/module.prop.in"]
+SPDX-FileCopyrightText = "2026 Dracen-W"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Verbatim copy of Magisk's LICENSE (the GNU GPL v3 text), shipped inside the module zip next to Magisk's installer script.
+[[annotations]]
+path = ["third_party/Magisk-LICENSE.txt"]
+SPDX-FileCopyrightText = "Free Software Foundation, Inc. (licence text); Magisk project"
+SPDX-License-Identifier = "LicenseRef-ThirdParty"
+
+# Vendor binaries and data copied unmodified (xz-compressed when large) from the donor image. NOT this project's work.
+[[annotations]]
+path = ["donor/files/**/*.so", "donor/files/**/*.so.xz", "donor/files/arm_props.txt"]
+SPDX-FileCopyrightText = "The respective rights holders (see THIRD_PARTY_NOTICES.md)"
+SPDX-License-Identifier = "LicenseRef-ThirdParty"
+
+# AOSP permission files; each carries its own Apache-2.0 header.
+[[annotations]]
+path = ["donor/files/etc/permissions/*.xml"]
+SPDX-FileCopyrightText = "The Android Open Source Project"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["donor/PROVENANCE.txt"]
+SPDX-FileCopyrightText = "2026 Dracen-W"
+SPDX-License-Identifier = "Apache-2.0"

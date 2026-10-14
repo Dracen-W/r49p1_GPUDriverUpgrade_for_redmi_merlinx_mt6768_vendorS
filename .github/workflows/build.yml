@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Dracen-W
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Pinned Magisk installer script; hash in third_party/module_installer.sha256
+  MAGISK_INSTALLER_COMMIT: cf47214ee4912ed1538fbea3d09ba9dd9b5746b0
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: shellcheck
+        run: |
+          shellcheck -s bash scripts/build.sh tools/import_donor.sh
+          shellcheck -s sh module/customize.sh
+      - name: python
+        run: python3 -m py_compile tools/patch_elf.py tools/check_device_symbols.py
+      - name: REUSE compliance
+        run: pipx run --spec reuse==6.2.0 reuse lint
+
+  build:
+    needs: lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu zip xz-utils
+
+      - name: Fetch pinned Magisk installer
+        run: |
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/module_installer.sh" \
+            "https://raw.githubusercontent.com/topjohnwu/Magisk/${MAGISK_INSTALLER_COMMIT}/scripts/module_installer.sh"
+          (cd "$RUNNER_TEMP" && sha256sum -c "$GITHUB_WORKSPACE/third_party/module_installer.sha256")
+
+      - name: Version
+        id: v
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then V="${GITHUB_REF_NAME#v}"; else V="0.0.0"; fi
+          [[ "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::bad version '$V'"; exit 1; }
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          scripts/build.sh --version "$VERSION" --installer "$RUNNER_TEMP/module_installer.sh"
+          unzip -l dist/*.zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: module-${{ steps.v.outputs.version }}
+          path: dist/*
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::bad version"; exit 1; }
+          FLAGS=()
+          [ "${VERSION%%.*}" = 0 ] && FLAGS+=(--prerelease)
+          cat > notes.md <<'NOTES'
+          **Experimental.** Flash the r49p1 kernel first
+          (<https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S>, the branch carrying the `r49p1` tag) and confirm
+          the device boots **without** this module; only then install the zip in Magisk. "No bugs seen so far" in the
+          README means limited testing on one device, not a guarantee.
+
+          The zip contains third-party binaries taken from the vendor partition of
+          `gale_global_images_OS2.0.208.0.VGPMIXM_20260713.0000.00_15.0_global_de08624a11`;
+          see THIRD_PARTY_NOTICES.md inside the zip and in the repository.
+
+          SHA-256:
+          ```
+          NOTES
+          cat dist/*.sha256 >> notes.md
+          printf '%s\n' '```' >> notes.md
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "Mali r49p1 for MT6768 $GITHUB_REF_NAME" --notes-file notes.md "${FLAGS[@]}" dist/*

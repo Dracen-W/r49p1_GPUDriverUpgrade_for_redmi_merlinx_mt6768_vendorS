@@ -1,0 +1,8 @@
+Donor firmware package : gale_global_images_OS2.0.208.0.VGPMIXM_20260713.0000.00_15.0_global_de08624a11
+Partition              : vendor.img (EROFS)
+vendor.img size/sha256 : 463032320 / 864631def5bde66f17db80e908da35f9bf4c5fed492163481585baccc99cc54e
+ro.vendor.build.fingerprint        : alps/vnd_gale/gale:15/AP3A.240905.015.A2/OS2.0.208.0.VGPMIXM:user/release-keys
+ro.vendor.build.version.incremental: OS2.0.208.0.VGPMIXM
+ro.vendor.build.date               : Mon Jul 13 11:25:40 UTC 2026
+Files copied unmodified from the image: see donor/SHA256SUMS in the source repository.
+These files are proprietary or third-party works; see THIRD_PARTY_NOTICES.md.

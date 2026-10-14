@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Dracen-W
+name: Bug report
+description: Something broke after installing the module
+body:
+  - type: checkboxes
+    attributes:
+      label: Before you file
+      options:
+        - label: I flashed the r49p1 kernel first and the device booted WITHOUT the module
+          required: true
+        - label: I tested with the module disabled (stock r32 driver) and the problem does NOT happen there
+          required: true
+  - type: input
+    attributes: {label: Module version, placeholder: v0.1.0}
+    validations: {required: true}
+  - type: input
+    attributes: {label: Kernel (uname -r) and branch/build}
+    validations: {required: true}
+  - type: input
+    attributes: {label: Device, description: "Model, SoC, ROM, vendor image / MIUI version, Magisk version"}
+    validations: {required: true}
+  - type: textarea
+    attributes:
+      label: What happened
+      description: Boot stuck / crash / glitch / which app. Steps to reproduce.
+    validations: {required: true}
+  - type: textarea
+    attributes:
+      label: Logs
+      description: "Install log, `dmesg | grep -i -E 'kbase|mali'`, the newest /data/tombstones file if SurfaceFlinger crashed. Remove anything private."
+      render: text

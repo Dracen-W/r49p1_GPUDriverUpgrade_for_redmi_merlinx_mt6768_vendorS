@@ -1,0 +1,10 @@
+Mali r49p1 userspace driver module for MT6768
+Copyright 2026 Dracen-W
+
+This product includes software developed by Dracen-W: the build and packaging scripts, the
+compatibility shim (src/shim/shim.c), the ELF patch tool (tools/patch_elf.py), the module installer
+script (module/customize.sh) and the documentation. That software is licensed under the Apache
+License, Version 2.0 (see LICENSE).
+
+The module package also redistributes third-party components that are NOT covered by that licence.
+They are listed, with their origin and terms, in THIRD_PARTY_NOTICES.md.
