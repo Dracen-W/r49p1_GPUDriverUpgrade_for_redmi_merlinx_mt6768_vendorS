@@ -10,7 +10,7 @@ r49p1, otherwise the r49p1 userspace has no matching kernel side.
 ## Which kernel
 
 <https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S/>, branch/build carrying the `r49p1` tag.
-The specific branch of r49p1 is <https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S/tree/droidspaces-r49p1-mt6768/> and the current release for the kernel `r49p1 driver (kbase)` is <https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S/releases/tag/202610150654-a06e6c-r49p1/>.
+The specific branch of r49p1 is <https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S/> and the current release for the kernel `r49p1 driver (kbase)` is <https://github.com/Dracen-W/android_kernel_xiaomi_mt6768_S/releases/tag/202610150654-a06e6c-r49p1/>.
 
 ## What that kernel changes
 
